@@ -22,14 +22,14 @@ import '@tensorflow/tfjs-backend-webgl';
 
 import dat from 'dat.gui';
 
-import {isMobile, toggleLoadingUI, tryResNetButtonName, tryResNetButtonText, updateTryResNetButtonDatGuiCss} from './demo_util';
+import {isMobile, toggleLoadingUI, tryResNetButtonName, tryResNetButtonText, updateTryResNetButtonDatGuiCss} from './utilities';
 // clang-format off
 import {
   drawBoundingBox,
   drawKeypoints,
   drawSkeleton,
   renderImageToCanvas,
-} from './demo_util';
+} from './utilities';
 
 // clang-format on
 
