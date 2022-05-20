@@ -1,4 +1,4 @@
-/**
+/** PoseNet utilities: https://github.com/tensorflow/tfjs-models/blob/b5d49c0f5ba2057cc29b40317126c5f182495f96/posenet/demo/demo_util.js
  * @license
  * Copyright 2019 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -219,27 +219,3 @@
      }
    }
  }
- 
- /**
-  * Draw offset vector values, one of the model outputs, on to the canvas
-  * Read our blog post for a description of PoseNet's offset vector outputs
-  * https://medium.com/tensorflow/real-time-human-pose-estimation-in-the-browser-with-tensorflow-js-7dd0bc881cd5
-  */
- // export function drawOffsetVectors(
- //     heatMapValues, offsets, outputStride, scale = 1, ctx) {
- //   const offsetPoints =
- //       posenet.singlePose.getOffsetPoints(heatMapValues, outputStride, offsets);
- 
- //   const heatmapData = heatMapValues.buffer().values;
- //   const offsetPointsData = offsetPoints.buffer().values;
- 
- //   for (let i = 0; i < heatmapData.length; i += 2) {
- //     const heatmapY = heatmapData[i] * outputStride;
- //     const heatmapX = heatmapData[i + 1] * outputStride;
- //     const offsetPointY = offsetPointsData[i];
- //     const offsetPointX = offsetPointsData[i + 1];
- 
- //     drawSegment(
- //         [heatmapY, heatmapX], [offsetPointY, offsetPointX], color, scale, ctx);
- //   }
- // }
