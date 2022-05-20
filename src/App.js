@@ -4,6 +4,13 @@ import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
+import { render } from "react-dom";
+import FPSStats from "react-fps-stats";
+
+
+// function setupFPS() {
+//   stats.showPanel(0);
+// }
 
 function App() {
   const webcamRef = useRef(null);
@@ -58,6 +65,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <FPSStats left="auto" right={"0em"} />
         <Webcam
           ref={webcamRef}
           style={{
@@ -92,3 +100,4 @@ function App() {
 }
 
 export default App;
+
