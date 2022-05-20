@@ -73,7 +73,6 @@ function App() {
       <Typography variant="h6" right="auto" left={"0em"} >Real-time web cam detection with PoseNet</Typography>
       <header className="App-header">
         <FPSStats left="auto" right={"0em"} />
-          //  Setup webcam and canvas to drawSkeleton over
         <Webcam
           ref={webcamRef}
           style={{
