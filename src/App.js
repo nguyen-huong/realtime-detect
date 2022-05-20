@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 //   stats.showPanel(0);
 // }
 
+//  References
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -21,21 +22,24 @@ function App() {
   const runPosenet = async () => {
     const net = await posenet.load({
       inputResolution: { width: 640, height: 480 },
+      //  Higher scale, higher accuracy
       scale: 0.5,
     })
-    //
+    // Allow detection every 100 ms
     setInterval(() => {
       detect(net);
     }, 100);
   };
 
+  //  Parse through posenet model
   const detect = async (net) => {
+    //  Ensure webcam ready
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
-      // Get Video Properties
+      // Get video properties
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -44,7 +48,7 @@ function App() {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      // Make Detections
+      // Make detections
       const pose = await net.estimateSinglePose(video);
       console.log(pose);
 
@@ -52,6 +56,7 @@ function App() {
     }
   };
 
+  // Ensure canvas matches with video properties, call utilities from tensorflow models
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
@@ -68,6 +73,7 @@ function App() {
       <Typography variant="h6" right="auto" left={"0em"} >Real-time web cam detection with PoseNet</Typography>
       <header className="App-header">
         <FPSStats left="auto" right={"0em"} />
+          //  Setup webcam and canvas to drawSkeleton over
         <Webcam
           ref={webcamRef}
           style={{
