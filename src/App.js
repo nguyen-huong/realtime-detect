@@ -6,7 +6,8 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import { render } from "react-dom";
 import FPSStats from "react-fps-stats";
-
+import barApp from "./bar"
+import Typography from '@mui/material/Typography';
 
 // function setupFPS() {
 //   stats.showPanel(0);
@@ -64,6 +65,7 @@ function App() {
 
   return (
     <div className="App">
+      <Typography variant="h6" right="auto" left={"0em"} >Real-time web cam detection with PoseNet</Typography>
       <header className="App-header">
         <FPSStats left="auto" right={"0em"} />
         <Webcam
@@ -100,4 +102,3 @@ function App() {
 }
 
 export default App;
-
