@@ -1,3 +1,4 @@
+
 import React, { useRef } from "react";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
@@ -6,14 +7,24 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import { render } from "react-dom";
 import FPSStats from "react-fps-stats";
+import Stats from "stats.js";
 import barApp from "./bar"
 import Typography from '@mui/material/Typography';
+import { Debugout } from 'debugout.js';
 
 // function setupFPS() {
 //   stats.showPanel(0);
 // }
+const bugout = new Debugout({ realTimeLoggingOn: false });
+const stats = new Stats();
+/**
+ * Sets up a frames per second panel on the top-left of the window
+ */
+ function setupFPS() {
+  stats.showPanel(0);  // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.getElementById('main').appendChild(stats.dom);
+}
 
-//  References
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -22,24 +33,21 @@ function App() {
   const runPosenet = async () => {
     const net = await posenet.load({
       inputResolution: { width: 640, height: 480 },
-      //  Higher scale, higher accuracy
       scale: 0.5,
     })
-    // Allow detection every 100 ms
+    //
     setInterval(() => {
       detect(net);
     }, 100);
   };
 
-  //  Parse through posenet model
   const detect = async (net) => {
-    //  Ensure webcam ready
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
-      // Get video properties
+      // Get Video Properties
       const video = webcamRef.current.video;
       const videoWidth = webcamRef.current.video.videoWidth;
       const videoHeight = webcamRef.current.video.videoHeight;
@@ -48,15 +56,21 @@ function App() {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      // Make detections
+      stats.begin();
+
+      // Make Detections
       const pose = await net.estimateSinglePose(video);
-      console.log(pose);
+      bugout.realTimeLoggingOn = true;
+      bugout.log(pose)
+
+
+      // console.log(pose, JSON.stringify(pose, null, 2));
 
       drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
+    bugout.downloadLog()
   };
 
-  // Ensure canvas matches with video properties, call utilities from tensorflow models
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
@@ -67,11 +81,14 @@ function App() {
   };
 
   runPosenet();
+  stats.end();
+  // requestAnimationFrame( animate );
 
   return (
     <div className="App">
       <Typography variant="h6" right="auto" left={"0em"} >Real-time web cam detection with PoseNet</Typography>
       <header className="App-header">
+        {/* <setupFPS left="auto" right={"0em"} /> */}
         <FPSStats left="auto" right={"0em"} />
         <Webcam
           ref={webcamRef}
@@ -105,5 +122,6 @@ function App() {
     </div>
   );
 }
+// requestAnimationFrame( animate );
 
 export default App;
